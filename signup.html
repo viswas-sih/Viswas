@@ -28,7 +28,6 @@
       overflow: hidden;
     }
 
-    /* Main container animation */
     .container {
       display: flex;
       flex-direction: row;
@@ -38,7 +37,7 @@
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       width: 600px; /* Reduced width */
-      max-width: 100%;
+      max-width: 90%; /* Changed to 90% for better mobile spacing */
       border: 1px solid rgba(255, 255, 255, 0.2);
       
       opacity: 0;
@@ -53,7 +52,6 @@
       }
     }
 
-    /* Individual element slide-in animation */
     .slide-in-element {
         opacity: 0;
         transform: translateY(30px);
@@ -67,7 +65,6 @@
         }
     }
     
-    /* Animation delays for cascading effect */
     .form-section h2 { animation-delay: 0.5s; }
     .form-group:nth-child(1) { animation-delay: 0.7s; }
     .form-group:nth-child(2) { animation-delay: 0.9s; }
@@ -176,11 +173,11 @@
       background-size: cover;
     }
 
-    /* Mobile Responsive */
     @media (max-width: 768px) {
       .container {
         flex-direction: column;
         width: 100%;
+        max-width: 95%;
       }
 
       .form-section, .image-section {

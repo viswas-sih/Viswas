@@ -26,7 +26,7 @@
         .navbar {
             background-color: #fff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: fixed;
+            position: sticky; /* Sticky navbar for better mobile UX */
             width: 100%;
             top: 0;
             left: 0;
@@ -52,10 +52,7 @@
         .nav-links {
             list-style: none;
             display: flex;
-        }
-
-        .nav-links li {
-            margin-left: 1.5rem;
+            gap: 1.5rem; /* Better spacing */
         }
 
         .nav-links a {
@@ -70,20 +67,21 @@
         }
 
         .main-content {
-            padding-top: 5rem; /* Space for the fixed navbar */
+            padding-top: 5rem;
             text-align: center;
         }
 
         .hero-section {
             background: linear-gradient(rgba(0, 210, 255, 0.2), rgba(0, 100, 200, 0.2)), url('waterdrop.jpg') no-repeat center center;
             background-size: cover;
-            height: 80vh;
+            height: calc(100vh - 5rem); /* Full height minus navbar height */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            padding: 0 20px;
         }
 
         .hero-section h1 {
@@ -95,28 +93,37 @@
             font-size: 1.2rem;
             max-width: 600px;
         }
+        
+        /* Mobile Navbar Improvements */
+        .menu-icon {
+            display: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #555;
+        }
 
-        /* Responsive Navbar */
         @media (max-width: 768px) {
             .navbar-container {
-                flex-direction: column;
-                align-items: flex-start;
+                flex-wrap: wrap;
+                padding: 1rem;
             }
             .nav-links {
+                display: none;
                 flex-direction: column;
                 width: 100%;
                 margin-top: 1rem;
-                display: none; /* Hide by default */
-            }
-            .nav-links li {
-                margin: 0.5rem 0;
+                gap: 0;
             }
             .nav-links.active {
-                display: flex; /* Show when active */
+                display: flex;
             }
-            .menu-toggle {
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+                padding: 10px 0;
+            }
+            .menu-icon {
                 display: block;
-                cursor: pointer;
             }
         }
     </style>
@@ -125,8 +132,9 @@
 
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="#" class="logo">Suvidha </a>
-            <ul class="nav-links">
+            <a href="#" class="logo">MyBrand</a>
+            <div class="menu-icon" onclick="toggleMenu()">☰</div>
+            <ul class="nav-links" id="navMenu">
                 <li><a href="#">Home</a></li>
                 <li><a href="signup.html">Sign Up</a></li>
                 <li><a href="login.html">Login</a></li>
@@ -141,6 +149,12 @@
             <p>Your journey to better living starts here. Sign up today to get started!</p>
         </section>
     </div>
-
+    
+    <script>
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>

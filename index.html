@@ -1,155 +1,453 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    
+    <title>Suvidha - Home Page</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            /* Define color variables for easier management */
+            --primary-blue: #0047ab;
+            --secondary-green: #00bfa6;
+            --text-dark: #1d1d1f;
+            --text-light: #555;
+            --background-light: #f7fcff;
+            --highlight-color: #007c91;
+            --card-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ========== Base & Reset ========== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background-color: #f0f4f8;
-            color: #333;
+            font-family: 'Poppins', sans-serif;
+            background: var(--background-light);
+            color: var(--text-dark);
             line-height: 1.6;
         }
 
-        .navbar {
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: sticky; /* Sticky navbar for better mobile UX */
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: 100;
+        /* ========== Reusable Classes ========== */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
-        .navbar-container {
+        /* ========== Navbar ========== */
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            padding: 15px 20px;
+            background: white;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .logo {
             font-size: 1.5rem;
-            font-weight: 600;
-            color: #008cff;
+            font-weight: 700;
+            color: var(--primary-blue);
             text-decoration: none;
         }
 
         .nav-links {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            text-align: center;
             list-style: none;
-            display: flex;
-            gap: 1.5rem; /* Better spacing */
         }
 
         .nav-links a {
+            padding: 10px;
             text-decoration: none;
-            color: #555;
-            font-weight: 400;
-            transition: color 0.3s ease;
+            color: var(--text-light);
+            font-weight: 500;
         }
 
-        .nav-links a:hover {
-            color: #008cff;
-        }
-
-        .main-content {
-            padding-top: 5rem;
-            text-align: center;
-        }
-
-        .hero-section {
-            background: linear-gradient(rgba(0, 210, 255, 0.2), rgba(0, 100, 200, 0.2)), url('waterdrop.jpg') no-repeat center center;
-            background-size: cover;
-            height: calc(100vh - 5rem); /* Full height minus navbar height */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            padding: 0 20px;
-        }
-
-        .hero-section h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .hero-section p {
-            font-size: 1.2rem;
-            max-width: 600px;
-        }
-        
-        /* Mobile Navbar Improvements */
         .menu-icon {
-            display: none;
             font-size: 2rem;
             cursor: pointer;
-            color: #555;
+            color: var(--text-dark);
+            display: block;
         }
 
-        @media (max-width: 768px) {
-            .navbar-container {
-                flex-wrap: wrap;
-                padding: 1rem;
-            }
+        /* Desktop Nav */
+        @media (min-width: 768px) {
             .nav-links {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                margin-top: 1rem;
-                gap: 0;
+                display: flex !important;
+                flex-direction: row;
+                justify-content: flex-end;
+                width: auto;
             }
-            .nav-links.active {
-                display: flex;
-            }
+
             .nav-links li {
-                width: 100%;
-                text-align: center;
-                padding: 10px 0;
+                margin-left: 25px;
             }
+
             .menu-icon {
-                display: block;
+                display: none;
             }
+        }
+
+        /* ========== Hero Section ========== */
+        .landing-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            gap: 40px;
+            text-align: center;
+        }
+        
+        @media (min-width: 900px) {
+            .landing-wrapper {
+                flex-direction: row;
+                text-align: left;
+                padding: 60px 40px;
+            }
+        }
+
+        .intro-text {
+            flex: 1;
+        }
+        
+        .intro-text h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        @media (min-width: 900px) {
+            .intro-text h1 {
+                font-size: 3rem;
+            }
+        }
+
+        .highlight-text {
+            color: var(--highlight-color);
+        }
+
+        .sub-description {
+            font-size: 1rem;
+            margin-bottom: 25px;
+            color: var(--text-light);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (min-width: 900px) {
+            .sub-description {
+                font-size: 1.1rem;
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+
+        /* ========== CTA Buttons ========== */
+        .cta-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        @media (min-width: 500px) {
+            .cta-group {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+        
+        @media (min-width: 900px) {
+            .cta-group {
+                justify-content: flex-start;
+            }
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-green));
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background: white;
+            border: 2px solid var(--secondary-green);
+            color: var(--secondary-green);
+        }
+
+        /* ========== Stats Section ========== */
+        .info-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        
+        @media (min-width: 900px) {
+            .info-metrics {
+                justify-content: flex-start;
+                gap: 40px;
+            }
+        }
+
+        .metric-item {
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .metric-label {
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        /* ========== Image Section ========== */
+        .visual-section {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+        }
+
+        .image-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            background: white;
+            padding: 10px;
+        }
+
+        .session-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 15px;
+        }
+
+        /* ========== Badges ========== */
+        .badge {
+            position: absolute;
+            background: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-live {
+            top: 20px;
+            left: 20px;
+            color: var(--highlight-color);
+        }
+
+        .badge-career {
+            bottom: 20px;
+            right: 20px;
+            color: #7b3e66;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            background: #01c38d;
+            border-radius: 50%;
+        }
+
+        /* ========== Cards Section ========== */
+        .cards-section {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .cards-section h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .cards-section h1 span {
+            color: var(--highlight-color);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 40px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 30px 20px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
         }
     </style>
 </head>
+
 <body>
 
     <nav class="navbar">
-        <div class="navbar-container">
-            <a href="#" class="logo">Suvidha</a>
-            <div class="menu-icon" onclick="toggleMenu()">☰</div>
-            <ul class="nav-links" id="navMenu">
-                <li><a href="#">Home</a></li>
-                <li><a href="signup.html">Sign Up</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="about.html">About</a></li>
-            </ul>
-        </div>
+        <a href="#" class="logo">Suvidha</a>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <ul class="nav-links" id="navMenu">
+            <li><a href="#">Home</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
     </nav>
 
-    <div class="main-content">
-        <section class="hero-section">
-            <h1>Welcome to Our Website</h1>
-            <p>Your journey to better living starts here. Sign up today to get started!</p>
+
+    <main>
+        <section class="landing-wrapper container">
+            <div class="intro-text">
+                <h1>
+                    Right Mentor,<br />
+                    Right Guidance,<br />
+                    <span class="highlight-text">Right Decision</span>
+                </h1>
+                <p class="sub-description">
+                    Connect with verified mentors from top colleges and companies, and compare colleges to make smarter
+                    choices.
+                </p>
+                <div class="cta-group">
+                    <a href="#" class="btn btn-primary">Find a Mentor</a>
+                    <a href="#" class="btn btn-outline">Compare Colleges</a>
+                </div>
+                <div class="info-metrics">
+                    <div class="metric-item">
+                        <h2 class="metric-value">10k+</h2>
+                        <p class="metric-label">Students Guided</p>
+                    </div>
+                    <div class="metric-item">
+                        <h2 class="metric-value">500+</h2>
+                        <p class="metric-label">Expert Mentors</p>
+                    </div>
+                    <div class="metric-item">
+                        <h2 class="metric-value">95%</h2>
+                        <p class="metric-label">Success Rate</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="visual-section">
+                <div class="image-card">
+                    <img src="https://images.unsplash.com/photo-1588702547923-7093a6c3ba33" alt="Mentorship session"
+                        class="session-image" />
+                    <div class="badge badge-live">
+                        <span class="status-indicator"></span> Live Session
+                    </div>
+                    <div class="badge badge-career">
+                        <span class="icon-case">💼</span> Career Guidance
+                    </div>
+                </div>
+            </div>
         </section>
-    </div>
-    
+
+        <section class="cards-section">
+            <div class="container">
+                <h1>Everything You Need for <span>Smart Decisions</span></h1>
+                <p class="subtitle">From finding the right mentor to comparing colleges, we've got you covered at every
+                    step of your journey.</p>
+
+                <div class="cards">
+                    <div class="card">
+                        <div class="icon">🎓</div>
+                        <div class="card-title">Admission Guidance</div>
+                        <div class="card-desc">Get mentorship from current students and alumni from your dream colleges.
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="icon">💼</div>
+                        <div class="card-title">Career Mentorship</div>
+                        <div class="card-desc">Internship and job guidance from professionals working in your field of
+                            interest.
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="icon">🏫</div>
+                        <div class="card-title">College Comparison</div>
+                        <div class="card-desc">Compare fees, placements, hostels & location across multiple colleges
+                            side by side.</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="icon">🤖</div>
+                        <div class="card-title">AI Matching</div>
+                        <div class="card-desc">Smartly connect with the right mentor for your goals using our AI
+                            recommendation engine.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
     <script>
         function toggleMenu() {
             const navMenu = document.getElementById('navMenu');
@@ -157,4 +455,5 @@
         }
     </script>
 </body>
+
 </html>

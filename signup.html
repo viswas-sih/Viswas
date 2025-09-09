@@ -28,6 +28,7 @@
       overflow: hidden;
     }
 
+    /* Main container animation */
     .container {
       display: flex;
       flex-direction: row;
@@ -36,8 +37,8 @@
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      width: 600px; /* Reduced width */
-      max-width: 90%; /* Changed to 90% for better mobile spacing */
+      width: 600px;
+      max-width: 90%;
       border: 1px solid rgba(255, 255, 255, 0.2);
       
       opacity: 0;
@@ -52,6 +53,7 @@
       }
     }
 
+    /* Individual element slide-in animation */
     .slide-in-element {
         opacity: 0;
         transform: translateY(30px);
@@ -65,6 +67,7 @@
         }
     }
     
+    /* Animation delays for cascading effect */
     .form-section h2 { animation-delay: 0.5s; }
     .form-group:nth-child(1) { animation-delay: 0.7s; }
     .form-group:nth-child(2) { animation-delay: 0.9s; }
@@ -173,6 +176,7 @@
       background-size: cover;
     }
 
+    /* Mobile Responsive */
     @media (max-width: 768px) {
       .container {
         flex-direction: column;
@@ -212,27 +216,44 @@
   <div class="container">
     <div class="form-section">
       <h2 class="slide-in-element">Sign Up</h2>
-      <div class="form-group slide-in-element">
-        <label>Email Address</label>
-        <input type="email" placeholder="hello@reallygreatsite">
-      </div>
-      <div class="form-group slide-in-element">
-        <label>Full Name</label>
-        <input type="text" placeholder="Dushyant Saini">
-      </div>
-      <div class="form-group slide-in-element">
-        <label>Password</label>
-        <input type="password" placeholder="********">
-      </div>
-      <div class="terms slide-in-element">
-        <label><input type="checkbox"> I agree to the **Terms & Conditions**</label>
-      </div>
-      <div class="buttons slide-in-element">
-        <button class="signup-btn" onclick="location.href='success.html'">Sign Up</button>
-        <button class="login-btn" onclick="location.href='login.html'">Login</button>
-      </div>
+      <form onsubmit="collectAndRedirect(event)" class="form-wrapper">
+        <div class="form-group slide-in-element">
+          <label for="emailInput">Email Address</label>
+          <input type="email" id="emailInput" placeholder="hello@reallygreatsite" required>
+        </div>
+        <div class="form-group slide-in-element">
+          <label for="nameInput">Full Name</label>
+          <input type="text" id="nameInput" placeholder="Dushyant Saini" required>
+        </div>
+        <div class="form-group slide-in-element">
+          <label for="passwordInput">Password</label>
+          <input type="password" id="passwordInput" placeholder="********" required>
+        </div>
+        <div class="terms slide-in-element">
+          <label><input type="checkbox" required> I agree to the **Terms & Conditions**</label>
+        </div>
+        <div class="buttons slide-in-element">
+          <button type="submit" class="signup-btn">Sign Up</button>
+          <button type="button" class="login-btn" onclick="location.href='login.html'">Login</button>
+        </div>
+      </form>
     </div>
     <div class="image-section"></div>
   </div>
+
+  <script>
+    function collectAndRedirect(event) {
+        event.preventDefault(); // Prevents the default form submission
+
+        const name = document.getElementById('nameInput').value;
+        const email = document.getElementById('emailInput').value;
+        
+        // Encode the values to be safe in a URL
+        const encodedName = encodeURIComponent(name);
+        const encodedEmail = encodeURIComponent(email);
+        
+        window.location.href = `success.html?name=${encodedName}&email=${encodedEmail}`;
+    }
+  </script>
 </body>
 </html>

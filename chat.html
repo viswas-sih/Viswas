@@ -2,129 +2,149 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>1:1 Live Chat</title>
-  <!-- Firebase JS SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
+  <title>Live Chat</title>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
   <style>
-    body { font-family: Arial; background: #f2f2f2; padding: 20px; }
-    .login-container, .chat-container { background: #fff; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto; }
-    input { display: block; margin: 10px 0; padding: 10px; width: 100%; }
-    button { padding: 10px; margin: 5px 0; width: 100%; cursor: pointer; }
-    #messages { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; margin-bottom: 10px; }
-    .message { margin: 5px 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-container {
+      width: 400px;
+      height: 600px;
+      background: #fff;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: #0084ff;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 10px 15px;
+      margin: 5px 0;
+      border-radius: 20px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .message.user {
+      background: #0084ff;
+      color: white;
+      align-self: flex-end;
+    }
+
+    .message.other {
+      background: #e5e5ea;
+      color: black;
+      align-self: flex-start;
+    }
+
+    .chat-input {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #ddd;
+      background: #fafafa;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+    }
+
+    .chat-input button {
+      margin-left: 10px;
+      padding: 10px 20px;
+      background: #0084ff;
+      border: none;
+      color: white;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .chat-input button:hover {
+      background: #006bbd;
+    }
+
+    /* Scrollbar design */
+    .chat-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body>
-  <!-- Login / Signup -->
-  <div class="login-container">
-    <h2>Login / Signup</h2>
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
-    <button id="signupBtn">Sign Up</button>
-    <button id="loginBtn">Login</button>
+  <div class="chat-container">
+    <div class="chat-header">Live Chat</div>
+    <div id="messages" class="chat-messages"></div>
+    <div class="chat-input">
+      <input id="msgInput" placeholder="Type a message..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
   </div>
 
-  <!-- Chat Container -->
-  <div class="chat-container" style="display:none;">
-    <h2>1:1 Live Chat</h2>
-    <input type="text" id="receiver" placeholder="Receiver Email">
-    <div id="messages"></div>
-    <input type="text" id="messageInput" placeholder="Type a message">
-    <button id="sendBtn">Send</button>
-    <button id="logoutBtn">Logout</button>
-  </div>
+  <script>
+    const socket = io("http://localhost:3000");
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
-
-    // 🔹 Replace this with your existing Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyBbPeczqOSEKmW3W8p-AiQvvbWz6o5qc98",
-      authDomain: "suvidha-e1d61.firebaseapp.com",
-      projectId: "suvidha-e1d61",
-      storageBucket: "suvidha-e1d61.appspot.com",
-      messagingSenderId: "179187721856",
-      appId: "1:179187721856:web:cf6d935367c5ff889b6865"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    // DOM Elements
-    const loginContainer = document.querySelector(".login-container");
-    const chatContainer = document.querySelector(".chat-container");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const receiverInput = document.getElementById("receiver");
-    const messagesDiv = document.getElementById("messages");
-    const messageInput = document.getElementById("messageInput");
-
-    // Signup
-    document.getElementById("signupBtn").onclick = async () => {
-      try {
-        await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
-        alert("Signup successful!");
-      } catch(e){ alert(e.message); }
-    };
-
-    // Login
-    document.getElementById("loginBtn").onclick = async () => {
-      try {
-        await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
-      } catch(e){ alert(e.message); }
-    };
-
-    // Logout
-    document.getElementById("logoutBtn").onclick = async () => {
-      await signOut(auth);
-    };
-
-    // After login
-    onAuthStateChanged(auth, user => {
-      if(user){
-        loginContainer.style.display = "none";
-        chatContainer.style.display = "block";
-
-        // Load messages in real-time
-        onSnapshot(query(collection(db, "messages"), orderBy("timestamp")), snapshot => {
-          messagesDiv.innerHTML = "";
-          snapshot.forEach(doc => {
-            const data = doc.data();
-            // Show only messages sent or received by this user + receiver
-            if((data.user === user.email && data.receiver === receiverInput.value) ||
-               (data.user === receiverInput.value && data.receiver === user.email)) {
-              const div = document.createElement("div");
-              div.className = "message";
-              div.innerHTML = `<b>${data.user}:</b> ${data.text}`;
-              messagesDiv.appendChild(div);
-            }
-          });
-          messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        });
-
-      } else {
-        loginContainer.style.display = "block";
-        chatContainer.style.display = "none";
-      }
+    //message receive
+    socket.on("chatMessage", (msg) => {
+      addMessage(msg, "other");
     });
 
-    // Send message
-    document.getElementById("sendBtn").onclick = async () => {
-      if(!messageInput.value || !receiverInput.value) return;
-      await addDoc(collection(db, "messages"), {
-        text: messageInput.value,
-        user: auth.currentUser.email,
-        receiver: receiverInput.value,
-        timestamp: serverTimestamp()
-      });
-      messageInput.value = "";
-    };
+  
+    function sendMessage() {
+      const msg = document.getElementById("msgInput").value;
+      if (msg.trim() !== "") {
+        socket.emit("chatMessage", msg);
+        addMessage(msg, "user");
+        document.getElementById("msgInput").value = "";
+      }
+    }
+
+   
+    function addMessage(msg, type) {
+      const div = document.createElement("div");
+      div.classList.add("message", type);
+      div.textContent = msg;
+      document.getElementById("messages").appendChild(div);
+
+     
+      const chatMessages = document.getElementById("messages");
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
   </script>
 </body>
 </html>
+

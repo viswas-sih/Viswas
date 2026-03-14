@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Live Chat</title>
@@ -99,12 +100,14 @@
     .chat-messages::-webkit-scrollbar {
       width: 6px;
     }
+
     .chat-messages::-webkit-scrollbar-thumb {
       background: #ccc;
       border-radius: 10px;
     }
   </style>
 </head>
+
 <body>
   <div class="chat-container">
     <div class="chat-header">Live Chat</div>
@@ -123,7 +126,7 @@
       addMessage(msg, "other");
     });
 
-  
+
     function sendMessage() {
       const msg = document.getElementById("msgInput").value;
       if (msg.trim() !== "") {
@@ -133,14 +136,14 @@
       }
     }
 
-   
+
     function addMessage(msg, type) {
       const div = document.createElement("div");
       div.classList.add("message", type);
       div.textContent = msg;
       document.getElementById("messages").appendChild(div);
 
-     
+
       const chatMessages = document.getElementById("messages");
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
@@ -148,20 +151,37 @@
 
 
 
-<!-- tawk to -->
- <!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/69b4f058406cbe1c37cf1ef8/1jjlclncf';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script-->
-</body>
-</html>
+  <!-- tawk to -->
+  <!--Start of Tawk.to Script-->
+  <script type="text/javascript">
+    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
 
+    // Adjust Widget Position (Custom CSS positioning for Tawk.to widget)
+    Tawk_API.customStyle = {
+      visibility: {
+        desktop: {
+          position: 'br',
+          xOffset: 15, // Horizontal distance from right
+          yOffset: 80  // Vertical distance from bottom (Increase this to move it higher)
+        },
+        mobile: {
+          position: 'br',
+          xOffset: 15,
+          yOffset: 80 // Vertical distance from bottom on mobile (Increase this to move it higher)
+        }
+      }
+    };
+
+    (function () {
+      var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+      s1.async = true;
+      s1.src = 'https://embed.tawk.to/69b4f058406cbe1c37cf1ef8/1jjlclncf';
+      s1.charset = 'UTF-8';
+      s1.setAttribute('crossorigin', '*');
+      s0.parentNode.insertBefore(s1, s0);
+    })();
+  </script>
+  <!--End of Tawk.to Script-->
+</body>
+
+</html>
